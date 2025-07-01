@@ -226,9 +226,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       setProgress(0.1);
 
       const scaffolding = new Scaffolding.Scaffolding();
-      scaffolding.width = 270;
-      scaffolding.height = 600;
-      scaffolding.resizeMode = "preserve-ratio";
+      scaffolding.width = 600;
+      scaffolding.height = 270;
+      scaffolding.resizeMode = "dynamic-resize";
       scaffolding.editableLists = false;
       scaffolding.usePackagedRuntime = true;
       scaffolding.setup();
@@ -259,8 +259,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       if (vm.setFramerate) vm.setFramerate(30);
       if (vm.renderer.setUseHighQualityRender) vm.renderer.setUseHighQualityRender(false);
       if (vm.setRuntimeOptions) vm.setRuntimeOptions({
-        fencing: true,
-        miscLimits: true,
+        fencing: false,
+        miscLimits: false,
         maxClones: 300,
       });
       if (vm.setCompilerOptions) vm.setCompilerOptions({
@@ -283,6 +283,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       for (const extension of []) {
         vm.extensionManager.loadExtensionURL(extension);
       }
+
+      vm.runtime.on('PROJECT_RUN_STOP', () => {
+        if (!vm.isPaused || !vm.isPaused()) {
+          window.close();
+        }
+      });
 
     } catch (e) {
       handleError(e);
